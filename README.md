@@ -1,5 +1,5 @@
 # CP3_CGProyect
-Different approaches to conjugate gradient
+In diesem Proyect werden verschiedene Varianten des Konjugierten Gradienten ausprobiert.
 
 Der Code besteht aus mehreren Dateien. Diese müssen einzeln kompiliert und dann
 zu einer ausführbaren Datei verlinkt werden. Dies erfolgt automatisch
