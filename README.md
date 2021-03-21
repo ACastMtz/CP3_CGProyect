@@ -9,9 +9,8 @@ power iteration was applied to determine the maximum and minimum eigenvalues
 of a system of linear equations, in particular, to the 2D discretization of the Laplace
 operator.
 
-Der Code besteht aus mehreren Dateien. Diese müssen einzeln kompiliert und dann
-zu einer ausführbaren Datei verlinkt werden. Dies erfolgt automatisch
-mit dem Werkzeug `cmake` und den Informationen in `CMakeLists.txt`.
+The code consists of several files that need to be compiled and linked in a runnable file. 
+This can be achieved using the `cmake` tool with the `CMakeLists.txt` file.
 
 ## Compile
 
