@@ -1,13 +1,8 @@
 # CP3_CGProyect
 
-In the present work, the popular iterative conjugate gradient method was adapted to
+In the present work, the popular iterative conjugate gradient method was adapted to parallel programing using CUDA, introducing a few ways to enhance the normal algorithm by means of preconditioning and mixed precision refinement iteration. 
 
-parallel programing using CUDA, introducing a few ways to enhance the normal al-
-gorithm by means of preconditioning and mixed precision refinement iteration. The
-
-power iteration was applied to determine the maximum and minimum eigenvalues
-of a system of linear equations, in particular, to the 2D discretization of the Laplace
-operator.
+The power iteration was applied to determine the maximum and minimum eigenvalues of a system of linear equations, in particular, to the 2D discretization of the Laplace operator.
 
 The code consists of several files that need to be compiled and linked in a runnable file. 
 This can be achieved using the `cmake` tool with the `CMakeLists.txt` file.
