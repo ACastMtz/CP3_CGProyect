@@ -6,6 +6,7 @@
 #include "global.h"
 #include "geometry.h"
 #include "linalg.h"
+#include "common.h"
 
 #define DEBUG
 

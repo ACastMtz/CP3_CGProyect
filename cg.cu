@@ -63,7 +63,7 @@ double cg(double *x, double *r, int maxiter, double rel, int *status)
 #ifdef DEBUG
       if (k % 10 == 0)
       {
-         printf("Iter %d, rel. Residuumnorm: %e\n",k,sqrt(rn/rn0));
+         //printf("Iter %d, rel. Residuumnorm: %e\n",k,sqrt(rn/rn0));
       }
 #endif
       if ((rn/rn0)<rel)

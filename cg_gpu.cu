@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <iostream>
+#include <ctime>
 #include "global.h"
 #include "geometry.h"
 #include "linalg.h"
+#include "common.h"
 
 
-
-#define DEBUG
 
 //GPU VERSION
 
@@ -60,9 +61,9 @@ double cg_gpu(double *x,double *r,int maxiter,double rel,int *status,int Nx,int 
     
    rn0=rn;
    status[0]=0;
-#ifdef DEBUG
+
    printf("Residuumnorm am Anfang: %e\n",sqrt(rn0));
-#endif
+
    if (rn==0.0)
       return rn;
    
@@ -73,8 +74,8 @@ double cg_gpu(double *x,double *r,int maxiter,double rel,int *status,int Nx,int 
     
    while (k<maxiter)
    {
-      
-      laplace_2d_gpu<<<grid,block>>>(d_s,d_p,Nx,Ny);     // q <- A*d
+      // q <- A*d
+      laplace_2d_gpu<<<grid,block>>>(d_s,d_p,Nx,Ny);     
 
       //Invoke dot_product_kernel
       dot_product_kernel<<<grid2,block2>>>(d_p,d_r,d_qr,npts);
@@ -84,19 +85,24 @@ double cg_gpu(double *x,double *r,int maxiter,double rel,int *status,int Nx,int 
       cudaMemcpy(qr,d_qr,sizeof(double),cudaMemcpyDeviceToHost);
       cudaMemcpy(qs,d_qs,sizeof(double),cudaMemcpyDeviceToHost);
       alpha_gpu=(*qr)/(*qs);
-             
-      mul_add_gpu<<<grid,block>>>(d_x,alpha_gpu,d_p,Nx,Ny);  // x <- x+al*d
-      mul_add_gpu<<<grid,block>>>(d_r,-alpha_gpu,d_s,Nx,Ny); // r <- r-al*q
-      rnold=rn;           // delta_old <- delta_new
+      
+	// x <- x+al*d       
+      mul_add_gpu<<<grid,block>>>(d_x,alpha_gpu,d_p,Nx,Ny);  
+	
+	// r <- r-al*q
+      mul_add_gpu<<<grid,block>>>(d_r,-alpha_gpu,d_s,Nx,Ny); 
+     
+	// delta_old <- delta_new 
+	rnold=rn;           
       CHECK(cudaMemcpy(r, d_r, nBytes, cudaMemcpyDeviceToHost)); 
       rn=norm_sqr(r);
       k+=1;
-#ifdef DEBUG
-      if (k % 100 == 0)
+
+      if (k % 10 == 0)
       {
-         printf("Iter %d, rel. Residuumnorm: %e\n",k,sqrt(rn/rn0));
+         //printf("Iter %d, rel. Residuumnorm: %e\n",k,sqrt(rn/rn0));
       }
-#endif
+
       if ((rn/rn0)<rel)
       {
          break;
@@ -109,9 +115,9 @@ double cg_gpu(double *x,double *r,int maxiter,double rel,int *status,int Nx,int 
       CHECK(cudaMemset(d_qs, 0.0, sizeof(double)));
    }
 
-#ifdef DEBUG
+
    printf("Rel. Residuumnorm nach %d Iterationen: %e\n",k,sqrt(rn/rn0));
-#endif
+
 
    if ((rn/rn0<=rel) && (k<=maxiter))
       *status=k;

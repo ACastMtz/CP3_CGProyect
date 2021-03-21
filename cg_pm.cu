@@ -1,4 +1,4 @@
-//DEFINITION OF CG AND NO PRINTS
+//DEFINITION OF CG AND NO PRINTS USED IN THE POWER ITERATION
 //CPU VERSION
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,6 +7,7 @@
 #include "global.h"
 #include "geometry.h"
 #include "linalg.h"
+#include "common.h"
 
 
 double cg_pm(double *x, double *r, int maxiter, double rel, int *status)
@@ -24,9 +25,7 @@ double cg_pm(double *x, double *r, int maxiter, double rel, int *status)
    rn=norm_sqr(r);
    rn0=rn;
    status[0]=0;
-#ifdef DEBUG
-  // printf("Residuumnorm am Anfang: %e\n",sqrt(rn0));
-#endif
+
    if (rn==0.0)
       return rn;
 
@@ -45,12 +44,7 @@ double cg_pm(double *x, double *r, int maxiter, double rel, int *status)
       rnold=rn;
       rn=norm_sqr(r);
       k+=1;
-#ifdef DEBUG
-      if (k % 10 == 0)
-      {
-         //printf("Iter %d, rel. Residuumnorm: %e\n",k,sqrt(rn/rn0));
-      }
-#endif
+
       if ((rn/rn0)<rel)
       {
          break;
@@ -59,9 +53,6 @@ double cg_pm(double *x, double *r, int maxiter, double rel, int *status)
       update_p(r,beta,p);
    }
 
-#ifdef DEBUG
-   //printf("Rel. Residuumnorm nach %d Iterationen: %e\n",k,sqrt(rn/rn0));
-#endif
 
    if ((rn/rn0<=rel) && (k<=maxiter))
       *status=k;
